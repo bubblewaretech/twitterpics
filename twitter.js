@@ -73,7 +73,7 @@ JQTWEET = {
                             }
 
                         } catch (e) {
-                            alert('Error ' + e.ToString);
+                            console.log('Error ' + e.ToString);
                         }
 
                     }
@@ -86,7 +86,7 @@ JQTWEET = {
                         'overlayShow': true
                     });
                 } catch (e) {
-                    alert('Error ' + e.ToString);
+                    console.log('Error ' + e.ToString);
                 }
 
             }
