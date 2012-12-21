@@ -2,10 +2,10 @@ JQTWEET = {
 
     // Set twitter hash/user, number of tweets & id/class to append tweets
     // You need to clear tweet-date.txt before toggle between hash and user
-    hash: '%23puppy OR %23doggie', //leave this blank if you want to show user's tweet
+    hash: '%23puppy OR %23kitty', //leave this blank if you want to show user's tweet
     user: '',
     numTweets: 100,
-    numPages: 20,
+    numPages: 25,
     cacheExpiry: 1, //get the new cache in hours
     appendTo: '#jstwitter',
 
@@ -95,13 +95,15 @@ JQTWEET = {
 
     },
     
-    loadFancyboxMasonry: function(){
+    loadMasonryInfiniteOLD: function(){
+
                     //trigger jQuery Masonry once all data are loaded				
                     var $container = $('#jstwitter');
                     $container.imagesLoaded(function () {
                         $container.masonry({
                             itemSelector: '.tweet',
                             isAnimated: true,
+                            appended: '.tweet',
                             // set columnWidth a fraction of the container width
                               columnWidth: function( containerWidth ) {
                                 return containerWidth / 5;
@@ -109,7 +111,58 @@ JQTWEET = {
                         });
                     });
 
-                    
+                    //load infinite scroll
+                    $container.infinitescroll(
+                    {
+                        navSelector: ".pagination",
+                        nextSelector: ".next",
+                        itemSelector: ".tweet",
+                        loading: {
+                            finishedMsg: "",
+                            img: "/resources/imageloader.gif",
+                            msg: null,
+                            msgText: ""
+                        }
+                    }
+                 
+                    );               
+    },
+
+    loadMasonryInfinite: function(){
+
+        var $container = $('#jstwitter');
+
+        $container.imagesLoaded(function(){
+          $container.masonry({
+            itemSelector: '.tweet',
+            columnWidth: function( containerWidth ) {
+                                return containerWidth / 5;
+                              },
+            isAnimated: true
+          });
+        });
+
+        $container.infinitescroll({
+          navSelector  : '#page-nav',    // selector for the paged navigation
+          nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
+          itemSelector : '.twitter',     // selector for all items you'll retrieve
+          loading: {
+              finishedMsg: 'No more pages to load.',
+              img: '/resources/imageloader.gif'
+            }
+          },
+          // trigger Masonry as a callback
+          function( newElements ) {
+            // hide new items while they are loading
+            var $newElems = $( newElements ).css({ opacity: 0 });
+            // ensure that images load before adding to masonry layout
+            $newElems.imagesLoaded(function(){
+              // show elems now they're ready
+              $newElems.animate({ opacity: 1 });
+              $container.masonry( 'appended', $newElems, true );
+            });
+          }
+        );
     },
 
     /**
@@ -232,5 +285,7 @@ $(document).ready(function () {
     for (var i = 1; i < JQTWEET.numPages; i++) {
         JQTWEET.loadTweets(i);
     }
-    JQTWEET.loadFancyboxMasonry();
+    JQTWEET.loadMasonryInfinite();
+
+    
 });
