@@ -13,14 +13,6 @@ fclose($datefile);
 
 
 
-//check if cache has expired
-if (floor(abs(($currentTime-$cacheDate) / 3600)) <= $_GET['expiry'] && $cacheDate) {
-
-	$cachefile = fopen($cache, 'r');
-	$data = fgets($cachefile);
-	fclose($cachefile);
-
-} else { //renew the cache
 
 	//toggle between API
 	if ($_GET['q']) 
@@ -41,7 +33,7 @@ if (floor(abs(($currentTime-$cacheDate) / 3600)) <= $_GET['expiry'] && $cacheDat
 	$datefile = fopen($date, 'wb');  
 	fwrite($datefile, utf8_encode(time()));  
 	fclose($datefile); 	 
-}
+
 
 
 header('Content-type: application/json');
