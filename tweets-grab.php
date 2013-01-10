@@ -17,7 +17,7 @@ fclose($datefile);
 	//toggle between API
 	if ($_GET['q']) 
 	{
-		$data = file_get_contents($_GET['api'] . '?q=' . urlencode($_GET['q']) . '&rpp=' . $_GET['rpp'] . '&include_entities=' . $_GET['include_entities'] . '&page=' . $_GET['page']);   
+		$data = file_get_contents($_GET['api'] . '?q=' . urlencode($_GET['q']) . '&rpp=' . $_GET['rpp'] . '&include_entities=' . $_GET['include_entities'] . '&page=' . $_GET['page'] . '&result_type=' . $_GET['result_type']);   
 	
 	} else if ($_GET['screen_name']) 
 	{
